@@ -829,6 +829,53 @@
                 font-size: 25px;
             }
         }
+    /* Estilos del menú hamburguesa */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Estilos para el menú móvil */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                background-color: var(--white);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                box-shadow: var(--shadow);
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+        }
     </style>
 </head>
 <body>
@@ -836,16 +883,21 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="#" class="logo">Villa Mercedes Market</a>
-            <div class="nav-links">
-                <a href="#publications">Publicaciones</a>
-                <a href="#contact">Contacto</a>
-                <a href="#trabaja">Trabaja con Nosotros</a>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#hero" class="nav-link">Inicio</a>
+                <a href="#comercios" class="nav-link">Comercios</a>
+                <a href="#publications" class="nav-link">Publicaciones</a>
+                <a href="#contact" class="nav-link">Contacto</a>
+                <a href="#trabaja" class="nav-link">Trabaja con Nosotros</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="hero" class="hero">
         <div class="hero-content">
             <h1>Compra y vende en Villa Mercedes</h1>
             <p>La manera más fácil de conectar compradores y vendedores en nuestra comunidad</p>
@@ -1477,6 +1529,44 @@
                 chatMessages.appendChild(bubble);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Control del menú hamburguesa
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('show');
+            });
+
+            // Cerrar el menú al hacer clic en un enlace
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('show');
+                });
+            });
+
+            // Cerrar el menú al hacer clic fuera de él
+            document.addEventListener('click', (e) => {
+                if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                    navLinks.classList.remove('show');
+                }
+            });
+        });
+
+        // Smooth scroll para los enlaces
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
     </script>
 </body>
